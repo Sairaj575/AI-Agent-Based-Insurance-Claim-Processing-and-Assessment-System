@@ -1,5 +1,8 @@
-
 import streamlit as st
+import os 
+
+if "GROQ_API_KEY" in st.secrets:
+    os.environ["GROQ_API_KEY"] = st.secrets["GROQ_API_KEY"]
 
 from schemas.claim import InsuranceClaim
 from workflow.graph import claim_workflow
