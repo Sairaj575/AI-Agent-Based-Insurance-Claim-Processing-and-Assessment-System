@@ -3,18 +3,16 @@ import os
 import json
 
 from dotenv import load_dotenv
-from langchain_google_genai import ChatGoogleGenerativeAI
+from langchain_groq import ChatGroq
 
 load_dotenv()
 
 
 def claim_summary_agent(claim, document_result, eligibility_result,use_gemini=True):
 
-    # Initialize Gemini
-    model = ChatGoogleGenerativeAI(
-    model="gemini-3.8-flash",
+    model = ChatGroq(
+    model="openai/gpt-oss-20b",
     temperature=0.2,
-    max_retries=3
 )
 
     # Prepare the information for Gemini

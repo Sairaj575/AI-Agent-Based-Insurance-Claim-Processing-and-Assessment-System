@@ -1,5 +1,5 @@
 langgraph
-langchain-google-genai
+langchain-groq
 pydantic
 streamlit
 python-dotenv

@@ -45,7 +45,7 @@ def summary_node(state: ClaimState):
         claim,
         state["document_result"],
         state["eligibility_result"],
-        use_gemini=False
+        use_gemini=True
     )
 
     return {"summary_result": result}
@@ -59,19 +59,19 @@ def decision_node(state: ClaimState):
 
     if document_result["document_status"] == "Incomplete":
         decision = "manual_review"
-        reason = "Some required documents are missing."
+        reason = "Required insurance documents are missing."
 
     elif eligibility_result["eligibility"] == "Not Eligible":
         decision = "reject"
-        reason = "The claim does not meet the demo eligibility rules."
+        reason = "The claim does not satisfy the insurance policy eligibility criteria."
 
     elif eligibility_result["risk_level"] in ["Medium", "High"]:
         decision = "manual_review"
-        reason = "The claim has a medium or high risk score."
+        reason = "The claim requires additional review due to its assessed risk level."
 
     else:
         decision = "approve"
-        reason = "Documents are complete and the claim meets the demo rules."
+        reason = "All required documents are submitted and the claim satisfies the defined eligibility criteria."
 
     return {
         "decision": decision,
