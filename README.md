@@ -1,4 +1,4 @@
-# AI Agent-Based Insurance Claim Processing and Assessment System Using LangGraph
+# AI Agent-Based Insurance Claim Processing and Assessment System
 
 An AI-powered multi-agent insurance claim processing system that automates document verification, claim eligibility assessment, risk analysis, and claim summarization using specialized agents coordinated through LangGraph.
 
