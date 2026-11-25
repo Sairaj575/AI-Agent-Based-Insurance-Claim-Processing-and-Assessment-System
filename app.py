@@ -1,9 +1,14 @@
 import streamlit as st
-import os 
+import os
+from dotenv import load_dotenv
 
-if "GROQ_API_KEY" in st.secrets:
-    os.environ["GROQ_API_KEY"] = st.secrets["GROQ_API_KEY"]
+load_dotenv()
 
+try:
+    if "GROQ_API_KEY" in st.secrets:
+        os.environ["GROQ_API_KEY"] = st.secrets["GROQ_API_KEY"]
+except FileNotFoundError:
+    pass
 from schemas.claim import InsuranceClaim
 from workflow.graph import claim_workflow
 
@@ -80,6 +85,12 @@ with st.form("claim_form"):
         available_documents,
         default=available_documents
     )
+    
+    uploaded_files = st.file_uploader(
+        "Upload actual claim documents (PDF, PNG, JPG)",
+        type=["pdf", "png", "jpg", "jpeg"],
+        accept_multiple_files=True
+    )
 
     submitted = st.form_submit_button(
         "Process Insurance Claim",
@@ -109,8 +120,17 @@ if submitted:
 
             with st.spinner("Processing insurance claim..."):
 
+                uploaded_file_data = [
+                    {
+                        "file_name": file.name,
+                        "file_bytes": file.getvalue()
+                    }
+                    for file in uploaded_files
+                ]
+
                 result = claim_workflow.invoke({
-                    "claim": claim
+                    "claim": claim,
+                    "uploaded_files": uploaded_file_data
                 })
 
             st.success("Claim processing completed!")
